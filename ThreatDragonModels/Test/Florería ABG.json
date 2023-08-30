@@ -1,16 +1,71 @@
 {
-  "version": "2.0.5",
-  "summary": {
-    "title": "Florería ABG",
-    "owner": "",
-    "description": "",
-    "id": 0
-  },
-  "detail": {
-    "contributors": [],
-    "diagrams": [],
-    "diagramTop": 0,
-    "reviewer": "",
-    "threatTop": 0
+  "threatModel": {
+    "detail": {
+      "title": "ABG Flowers Online Platform",
+      "version": "1.0",
+      "description": "Threat model for ABG Flowers' AWS-based web sales."
+    },
+    "diagrams": [
+      {
+        "title": "ABG Flowers System",
+        "nodes": [
+          {"id": "1", "type": "tm.Process", "label": "Customer"},
+          {"id": "2", "type": "tm.Process", "label": "Web Server"},
+          {"id": "3", "type": "tm.Process", "label": "Payment Platform"},
+          {"id": "4", "type": "tm.Process", "label": "Database"},
+          {"id": "5", "type": "tm.Process", "label": "Owner's Computer"},
+          {"id": "6", "type": "tm.Store", "label": "Web Console"}
+        ],
+        "flows": [
+          {"id": "f1", "from": "1", "to": "2", "label": "HTTPS (Port 443)"},
+          {"id": "f2", "from": "2", "to": "3", "label": "Payment Processing API"},
+          {"id": "f3", "from": "2", "to": "4", "label": "DB Access"},
+          {"id": "f4", "from": "5", "to": "2", "label": "SSH (Port 22)"},
+          {"id": "f5", "from": "2", "to": "6", "label": "Web Console Access"}
+        ],
+        "threats": [
+          {
+            "id": "t1",
+            "flow": "f4",
+            "threatType": "Unauthorized Access",
+            "description": "Unauthorized Access to Port 22 (SSH).",
+            "status": "Open",
+            "countermeasure": "Implement MFA, Update SSH keys, Monitor activities"
+          },
+          {
+            "id": "t2",
+            "flow": "f1",
+            "threatType": "Web Server Vulnerability",
+            "description": "Possible Web Server Vulnerabilities at Port 443.",
+            "status": "Open",
+            "countermeasure": "Update web server, WAF, Security audits"
+          },
+          {
+            "id": "t3",
+            "flow": "f2",
+            "threatType": "Payment Fraud",
+            "description": "Payment Platform Security Risks.",
+            "status": "Open",
+            "countermeasure": "Secure API, Payment logs, Data Encryption"
+          },
+          {
+            "id": "t4",
+            "flow": "f3",
+            "threatType": "Data Leak",
+            "description": "Database exposure.",
+            "status": "Open",
+            "countermeasure": "Encryption, Backup, Database firewall"
+          },
+          {
+            "id": "t5",
+            "flow": "f5",
+            "threatType": "Unauthorized Access",
+            "description": "Unauthorized Web Console Access.",
+            "status": "Open",
+            "countermeasure": "Strong passwords, MFA, Role-based access"
+          }
+        ]
+      }
+    ]
   }
 }
